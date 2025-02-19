@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -22,6 +23,10 @@ public class WorkoutService {
 
     public List<Workout> getAll() {
         return workoutRepository.findAll();
+    }
+
+    public Optional<Workout> getById(long id){
+        return workoutRepository.findById(id);
     }
 
     @Transactional
@@ -48,6 +53,17 @@ public class WorkoutService {
 
         workout.setExercises(workoutExercises);
         return workoutRepository.save(workout);
+    }
+
+    @Transactional
+    public Optional<Workout> update(Long id, Workout workoutDetails) {
+        return workoutRepository.findById(id).map(workout -> {
+            workout.setName(workoutDetails.getName());
+            workout.setDateRecorded(workoutDetails.getDateRecorded());
+            workout.setDurationInMinutes(workoutDetails.getDurationInMinutes());
+            workout.setExercises(workoutDetails.getExercises());
+            return workoutRepository.save(workout);
+        });
     }
 
     @Transactional
