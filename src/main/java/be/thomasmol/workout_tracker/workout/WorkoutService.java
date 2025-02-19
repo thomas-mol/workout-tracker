@@ -49,4 +49,9 @@ public class WorkoutService {
         workout.setExercises(workoutExercises);
         return workoutRepository.save(workout);
     }
+
+    @Transactional
+    public void delete(long id) {
+        workoutRepository.deleteById(id);
+    }
 }

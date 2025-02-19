@@ -1,7 +1,6 @@
 package be.thomasmol.workout_tracker.exercise;
 
 import be.thomasmol.workout_tracker.workout.Workout;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -15,7 +14,7 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -38,16 +37,20 @@ public class Exercise {
     public Exercise() {
     }
 
-    public Exercise(String name, MuscleGroup muscleGroup) {
+    public Exercise(long id, String name, MuscleGroup muscleGroup, int sets, int repetitions, Set<Workout> workouts) {
+        this.id = id;
         this.name = name;
         this.muscleGroup = muscleGroup;
+        this.sets = sets;
+        this.repetitions = repetitions;
+        this.workouts = workouts;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -97,7 +100,7 @@ public class Exercise {
         if (obj == null || getClass() != obj.getClass()) return false;
 
         Exercise exercise = (Exercise) obj;
-        if(exercise.sets != sets || exercise.repetitions != repetitions) return false;
+        if (exercise.sets != sets || exercise.repetitions != repetitions) return false;
         return name.equalsIgnoreCase(exercise.name) && muscleGroup == exercise.muscleGroup;
     }
 
